@@ -13,20 +13,22 @@
 </head>
 <body>
     <div id = "title" class ="flex-container">
-        <div><h1>Craps!</h1></div>
+        <div class = "title"><h1>Craps!</h1></div>
     </div>
     <div id="dice-container" class = "flex-container">
         <div><img id ="dice1" src = "dice1.png"></div>
         <div><img id = "dice2" src = "dice1.png"></div>
     </div>
     <div id = "numbers" class = "flex-container">
-        <div id = "point"><label>Point: </label></div>
-        <div><label>Enter Your Bet: </label><input type ="text" id = "bet" name="bet"></div>
-        <div><button id = "placeBet" onclick = "placeBet()">Place Bet</button> </div>
-        <div><label id ="bank">Bank: </label></div>
+        <div id = "point" class = "point"><label id = "point">Point: </label></div>
+        <div class ="input" id ="input"><label>Enter Your Bet: </label><input type ="text" id = "bet" name="bet"></div>
+        <div class = "placeBet" id ="placeBet"><button id = "placeBet" onclick = "placeBet()">Place Bet</button> </div>
+        <div id="bank" class ="bank"><label id ="bank">Bank: </label></div>
     </div>
-    <div id = "play" class = "flex-container"><button id ="play" onclick = "calculate_score()">Play</button></div>
-    <div class = "popup">Pop Up
+    <div id="playButton" class = "flex-container">
+        <div class = "play" id = "play"><button id ="play" onclick = "calculate_score()">Roll</button></div>
+    </div>
+    <div class = "popup">.
         <span class ="popuptext" id = "myPopup">Some Text...</span>
     </div>
     

@@ -7,16 +7,11 @@ let currency = new Intl.NumberFormat('en-US', {
     currency: 'USD',
 });
 let wallet = currency.format(walletPrice);
-let bet;
+let bet = 0;
 let point;
 
-//display variable
-let walletDisplay = document.getElementById("bank");
-let walletText = document.createTextNode(wallet);
-walletDisplay.appendChild(walletText);
-
-
-
+//display variable for bank
+let walletDisplay = document.getElementById("bank").innerHTML = "Bank: "+ wallet;
 
 //rolls the dice on the screen and calculates the result of the roll
 function rollDice(){
@@ -24,7 +19,7 @@ function rollDice(){
     let dice2 = Math.floor(Math.random()*6) +1;
     let dice1Image;
     let dice2Image;
-    if(walletPrice = 0.00){
+    if(walletPrice == 0.00){
         let popUp = document.getElementById("myPopup");
         let text = document.createTextNode("Sorry you do not have the funds to play.");
         popUp.appendChild(text);
@@ -115,58 +110,64 @@ function outcome(){
         popUp.innerHTML = "Great first roll! \nYou Win!";
         popUp.classList.toggle("show");
         setTimeout(() => {popUp.classList.toggle("show");}, 5000);
-        //walletPrice = walletPrice + bet;
+        walletPrice = walletPrice + bet;
         wallet = currency.format(walletPrice);
-        walletDisplay = document.getElementById("bank").innerHTML = "Bank: "+ walletPrice;
+        walletDisplay = document.getElementById("bank").innerHTML = "Bank: "+ wallet;
         counter = 0;
         bet = 0;
+        let eraseBet = document.getElementById('bet');
+        eraseBet.value = "";
     }//end if
+
     else if((counter == 1 && rollResult == 2) || (counter == 1 && rollResult == 3) || (counter ==1 && rollResult == 12)){
         let popUp = document.getElementById("myPopup");
         popUp.innerHTML = "Craps! \nYou Lose!";
         popUp.classList.toggle("show");
         setTimeout(() => {popUp.classList.toggle("show");}, 5000);
         walletPrice = walletPrice - bet;
-        walletText = document.createTextNode("Bank: "+ wallet);
-        walletDisplay = document.getElementById("bank").innerHTML = walletText;
+        wallet = currency.format(walletPrice);
+        walletDisplay = document.getElementById("bank").innerHTML = "Bank: "+ wallet;
         counter = 0;
         bet = 0;
+        let eraseBet = document.getElementById('bet');
+        eraseBet.value = "";
     }//end else if
+
     else if ((counter == 1 && rollResult == 4) || (counter == 1 && rollResult == 5) || (counter == 1 && rollResult == 6) || (counter == 1 && rollResult == 8) || (counter == 1 && rollResult == 9) || (counter == 1 && rollResult == 10)){
         point = rollResult;
-        let pointDisplay =document.getElementById("point");
-        let pointText = document.createTextNode("Point: "+ point);
-        pointDisplay.appendChild(pointText);
+        let pointDisplay =document.getElementById("point").innerHTML = "Point: "+point;
     }//end else if
-    else if(count > 1 && rollResult == point){
+
+    else if(counter > 1 && rollResult == point){
         let popUp = document.getElementById("myPopup");
         popUp.innerHTML = "You made your point! \nYou Win!";
         popUp.classList.toggle("show");
         setTimeout(() => {popUp.classList.toggle("show");}, 5000);
         walletPrice = walletPrice + bet;
         wallet = currency.format(walletPrice);
-        walletDisplay = document.getElementById("bank");
-        walletText = document.createTextNode("Bank: "+ wallet);
-        walletDisplay.appendChild(walletText);
+        walletDisplay = document.getElementById("bank").innerHTML = "Bank: "+ wallet;
         counter = 0;
-        let pointDisplay =document.getElementById("point");
-        let pointText = document.createTextNode("Point: ");
-        pointDisplay.appendChild(pointText);
+        bet = 0;
+        point = null;
+        let pointDisplay =document.getElementById("point").innerHTML = "Point: ";
+        let eraseBet = document.getElementById('bet');
+        eraseBet.value = "";
     }//end else if
-    else if(count > 1 && rollResult == 7){
+
+    else if(counter > 1 && rollResult == 7){
         let popUp = document.getElementById("myPopup");
         popUp.innerHTML = "Craps! \nYou Lose!";
         popUp.classList.toggle("show");
         setTimeout(() => {popUp.classList.toggle("show");}, 5000);
         walletPrice = walletPrice - bet;
         wallet = currency.format(walletPrice);
-        walletDisplay = document.getElementById("bank");
-        walletText = document.createTextNode("Bank: "+ wallet);
-        walletDisplay.appendChild(walletText);
+        walletDisplay = document.getElementById("bank").innerHTML = "Bank: "+ wallet;
         counter = 0;
-        let pointDisplay =document.getElementById("point");
-        let pointText = document.createTextNode("Point: ");
-        pointDisplay.appendChild(pointText);
+        bet = 0;
+        point = null;
+        let pointDisplay =document.getElementById("point").innerHTML = "Point: ";
+        let eraseBet = document.getElementById('bet');
+        eraseBet.value = "";
     }//end else if
 }//end outcome
 
@@ -175,6 +176,12 @@ function placeBet(){
     if(counter < 1){
     bet = parseInt(document.getElementById('bet').value);
     }
+    else{
+        let popUp = document.getElementById("myPopup");
+        popUp.innerHTML = "Cannot Place New Bet \nGame Has Already Begun";
+        popUp.classList.toggle("show");
+        setTimeout(() => {popUp.classList.toggle("show");}, 5000);
+    }
 }//end placeBet
 
 
@@ -182,14 +189,23 @@ function placeBet(){
 function calculate_score(){
     
    try{
-        if(bet <= walletPrice){
+        if(bet <= walletPrice && bet != 0){
             counter++;
             rollDice();
             outcome();
         }
-        else{
+        else if(bet > walletPrice){
             let popUp = document.getElementById("myPopup");
             popUp.innerHTML = "Invalid Bet. \nPlease enter a numerical value that you can afford";
+            popUp.classList.toggle("show");
+            bet.value = 0;
+            setTimeout(() => {popUp.classList.toggle("show");}, 5000);
+            let eraseBet = document.getElementById('bet');
+            eraseBet.value = "";
+        }
+        else if(bet == 0){
+            let popUp = document.getElementById("myPopup");
+            popUp.innerHTML = "Please Place a Bet Before Playing";
             popUp.classList.toggle("show");
             bet.value = 0;
             setTimeout(() => {popUp.classList.toggle("show");}, 5000);
